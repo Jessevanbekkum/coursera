@@ -143,5 +143,19 @@ public class ByteArrayTest {
         assertThat((int) c[0], is(Byte.MIN_VALUE +1));
         assertThat((int) c[1], is(Byte.MIN_VALUE + 0));
     }
+   @Test
+    public void testConcat() {
+        byte[] a1 = ByteArray.hex2byte("aa");
+        byte[] a2 = ByteArray.hex2byte("bb");
+        byte[] a3 = ByteArray.hex2byte("cc");
+        byte[] a4 = ByteArray.hex2byte("dd");
 
+        assertThat(ByteArray.byte2hex(ByteArray.concat(a1,a2,a3,a4)), is("aabbccdd"));
+
+    }
+@Test
+    public void testPadding() {
+    String b= ByteArray.byte2hex(ByteArray.getPadding(5));
+    assertThat(b, is("00000000000000000000000505050505"));
+}
 }

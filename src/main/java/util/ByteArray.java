@@ -18,7 +18,7 @@ public class ByteArray {
     public static String byte2hex(byte[] data) {
         StringBuilder sb = new StringBuilder();
         for (byte b : data) {
-            sb.append(String.format("%02X", b));
+            sb.append(String.format("%02x", b));
         }
         return sb.toString();
     }
@@ -63,5 +63,41 @@ public class ByteArray {
         return result;
     }
 
+    public static byte[][] chopBlock(byte[] bytes) {
 
+        int nrOfBlocks = bytes.length %16==0 ? bytes.length/16: bytes.length/16 + 1;
+        byte[][] result = new byte[nrOfBlocks][16];
+        for (int i = 0 ; i< result.length;i++) {
+            System.arraycopy(bytes, i*16, result[i], 0, Math.min(16, bytes.length - i*16));
+        }
+        return result;
+    }
+
+    public static byte[] concat(byte[]... bytes) {
+        int i = 0;
+        for (byte[] b : bytes) {
+            i+= b.length;
+        }
+        int j = 0;
+        byte[] result = new byte[i];
+        for (byte[] b: bytes) {
+            System.arraycopy(b, 0, result, j, b.length);
+            j += b.length;
+        }
+
+        return result;
+    }
+
+
+
+    public static byte[] getPadding(int i) {
+        if (i>16||i<0) throw new IllegalArgumentException();
+
+        byte[] result = new byte[16];
+
+        for (int j = 1; j<=i;j++) {
+            result[16-j] = (byte)i;
+        }
+        return result;
+    }
 }
